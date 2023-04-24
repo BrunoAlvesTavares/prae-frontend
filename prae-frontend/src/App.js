@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import Menu from './teste';
+import Menu from '../src/components/menu/menu';
 
 function App() {
   return (
