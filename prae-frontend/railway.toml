@@ -1,0 +1,23 @@
+[railway]
+# Configurações gerais do Railway
+name = "minha-aplicacao-react"
+defaultEnv = "production"
+framework = "nodejs"
+
+[build]
+# Etapa de build para instalar as dependências do npm
+command = "npm install"
+
+[deploy]
+# Comando para executar a construção do React e iniciar o servidor
+command = "npm run build && npm start"
+
+[env.production]
+# Variáveis de ambiente específicas para o ambiente de produção
+PORT = 3000
+NODE_ENV = "production"
+
+[env.development]
+# Variáveis de ambiente específicas para o ambiente de desenvolvimento
+PORT = 3000
+NODE_ENV = "development"
