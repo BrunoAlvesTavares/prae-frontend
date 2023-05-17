@@ -5,7 +5,6 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    IconButton,
     Divider,
     Typography,
 } from '@mui/material';
@@ -13,39 +12,25 @@ import {
     Home as HomeIcon,
     Book as BookIcon,
     AccountCircle as AccountCircleIcon,
-    Menu as MenuIcon,
-    Close as CloseIcon,
 } from '@mui/icons-material';
 
+import { Link } from 'react-router-dom';
+
 const Menu = () => {
-    const [open, setOpen] = useState(true);
+    const [selectedIndex, setSelectedIndex] = useState();
 
     const items = [
         { label: 'Página inicial', icon: <HomeIcon />, path: '/' },
         { label: 'Livros', icon: <BookIcon />, path: '/books' },
-        { label: 'Usuários', icon: <AccountCircleIcon />, path: '/user' },
+        { label: 'Usuários', icon: <AccountCircleIcon />, path: '/users' },
     ];
-
-    const handleToggle = () => setOpen(!open);
-
-    const handleClose = () => setOpen(false);
 
     return (
         <>
-            <IconButton
-                onClick={handleToggle}
-                sx={{ position: 'fixed', top: 16, left: 16, zIndex: 1 }}
-            >
-                {open ? (
-                    <CloseIcon sx={{ fontSize: 36, color: '#2196F3' }} />
-                ) : (
-                    <MenuIcon sx={{ fontSize: 36, color: '#2196F3' }} />
-                )}
-            </IconButton>
             <Drawer
                 variant="persistent"
                 anchor="left"
-                open={open}
+                open={true}
                 sx={{
                     width: 240,
                     flexShrink: 0,
@@ -65,18 +50,24 @@ const Menu = () => {
                 <Divider sx={{ mt: 1, mb: 2, backgroundColor: '#fff' }} />
                 <List>
                     {items.map(({ label, icon, path }, index) => (
+                        <Link
+                        to={path}
+                        key={index}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
                         <ListItem
-                            key={index}
                             button
-                            to={path}
                             sx={{
                                 borderRadius: 8,
                                 mb: 1,
                                 '&.Mui-selected': {
                                     backgroundColor: '#64B5F6',
                                     color: '#fff',
+                                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', 
                                 },
                             }}
+                            selected={selectedIndex === index} 
+                            onClick={() => setSelectedIndex(index)} 
                         >
                             <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
                             <ListItemText
@@ -87,14 +78,10 @@ const Menu = () => {
                                 primary={label}
                             />
                         </ListItem>
+                    </Link>
                     ))}
                 </List>
                 <Divider sx={{ mt: 'auto', mb: 1, backgroundColor: '#fff' }} />
-                <div sx={{ display: 'flex', justifyContent: 'flex-end', mr: 16 }}>
-                    <IconButton onClick={handleClose}>
-                        <CloseIcon sx={{ color: '#fff' }} />
-                    </IconButton>
-                </div>
             </Drawer>
         </>
     );
