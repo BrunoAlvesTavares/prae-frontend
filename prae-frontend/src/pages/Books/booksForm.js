@@ -7,7 +7,7 @@ import UserCombo from '../../components/Combos/UsersCombo';
 
 const BookForm = () => {
   const navigate = useNavigate();
-  const [book, setBook] = useState({ title: '', author: '', category: [], state: '', trocadoPor: '' });
+  const [book, setBook] = useState({ title: '', author: '', category: [], state: '', trocadoPor: null });
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
@@ -116,11 +116,11 @@ const BookForm = () => {
           onChange={handleChange}
         />
       </Grid>
-      { id &&
-  <Grid item md={12} sm={6} xs={6}>
-    <UserCombo value={book.trocadoPor} onUserChanged={(value) => setBook({ ...book, trocadoPor: value })} />
-  </Grid>
-}
+      {id && (
+        <Grid item md={12} sm={6} xs={6}>
+          <UserCombo value={book.trocadoPor} onUserChanged={(value) => setBook({ ...book, trocadoPor: value })} />
+        </Grid>
+      )}
       <Button variant="contained" color="primary" type="submit" disabled={loading} style={{ marginTop: '1rem' }}>
         {loading ? 'Loading...' : 'Salvar'}
       </Button>
