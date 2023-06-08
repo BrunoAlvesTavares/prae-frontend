@@ -6,6 +6,7 @@ import OperationDropdown from '../../components/operationDropdown';
 import ExpandableTable from '../../components/ExpandableTable/ExpandableTable';
 import PopperButton from '../../components/PopperButton/index';
 import FloatButton from '../../components/FloatButton/index';
+import api from '../../utils/api';
 
 export function BooksList() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function BooksList() {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3333/books/${ids}`).then(() => {
+        api.delete(`/books/${ids}`).then(() => {
           setReload(!reload);
           Toast.fire({
             title: "Sucesso!",
@@ -54,11 +55,11 @@ export function BooksList() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3333/books')
+    api
+      .get('/books')
       .then(response => {
         const updatedBooksData = response.data.map(book => {
-          const email = book.trocadoPor ? book.trocadoPor.email : "Livro não trocado";
+          const email = book.trocadoPor ? book.trocadoPor.email : "Livro disponível";
           return { ...book, category: book.category.join(", "), email };
         })        
         setBooksData(updatedBooksData);
