@@ -1,10 +1,11 @@
-import axios from 'axios';
 import React, { useState, useEffect, useCallback } from 'react';
 import { SwalWithMui, Toast } from '../../components/swal';
 import { useNavigate } from 'react-router-dom';
 import ExpandableTable from '../../components/ExpandableTable/ExpandableTable';
 import PopperButton from '../../components/PopperButton/index';
 import FloatButton from '../../components/FloatButton/index';
+import OperationDropdown from '../../components/operationDropdown';
+import api from '../../utils/api';
 
 export function UsersList() {
   const navigate = useNavigate();
@@ -27,13 +28,14 @@ export function UsersList() {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3333/users/${ids}`).then(() => {
+        api.delete(`/users/${ids}`).then(() => {
           setReload(!reload);
           Toast.fire({
             title: "Sucesso!",
             text: "usuários(s) removido(s) com sucesso",
             icon: "success",
           });
+          navigate("/users");
         }).catch(err => {
           Toast.fire({
             title: "Erro ao deletar",
@@ -53,7 +55,7 @@ export function UsersList() {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:3333/users')
+    api.get('/users')
       .then(response => {
         setUsersData(response.data);
         setColumns([
@@ -67,8 +69,8 @@ export function UsersList() {
             }
           },
           {
-            name: 'email',
-            label: 'e-mail',
+            name: 'username',
+            label: 'E-mail',
             options: {
               filter: true,
               sort: true,
@@ -83,6 +85,24 @@ export function UsersList() {
               sort: true,
               filterType: "textField",
             }
+          },
+          {
+            name: '_id',
+            label: 'Operações',
+            options: {
+              filter: false,
+              sort: false,
+              customBodyRenderLite: dataIndex => {
+                const url = `/users/${response.data[dataIndex]._id}/edit`;
+                const items = [
+                  {
+                    label: 'Editar usuário',
+                    onclick: () => navigate(url),
+                  },
+                ];
+                return <OperationDropdown items={items} />;
+              },
+            },
           },
         ]);
       })

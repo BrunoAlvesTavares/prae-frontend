@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SwalWithMui, Toast } from '../../components/swal';
@@ -59,8 +58,8 @@ export function BooksList() {
       .get('/books')
       .then(response => {
         const updatedBooksData = response.data.map(book => {
-          const email = book.trocadoPor ? book.trocadoPor.email : "Livro disponível";
-          return { ...book, category: book.category.join(", "), email };
+          const username = book.trocadoPor ? book.trocadoPor.username : "---";
+          return { ...book, category: book.category.join(", "), username };
         })        
         setBooksData(updatedBooksData);
         setColumns([
@@ -101,7 +100,7 @@ export function BooksList() {
             },
           },
           {
-            name: 'email',
+            name: 'username',
             label: 'Trocado Por',
             options: {
               filter: true,

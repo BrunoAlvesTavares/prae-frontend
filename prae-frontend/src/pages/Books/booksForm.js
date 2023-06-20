@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
-import axios from 'axios';
+import { TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toast } from '../../components/swal';
 import UserCombo from '../../components/Combos/UsersCombo';
+import api from '../../utils/api';
 
 const BookForm = () => {
   const navigate = useNavigate();
-  const [book, setBook] = useState({ title: '', author: '', category: [], state: '', trocadoPor: null });
+  const [book, setBook] = useState({ title: '', author: '', category: [], state: '', trocadoPor: null, });
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
       setLoading(true);
-      axios.get(`http://localhost:3333/books/${id}`)
+      api.get(`/books/${id}`)
         .then(response => {
           setBook(response.data);
           setLoading(false);
@@ -34,11 +34,18 @@ const BookForm = () => {
     }));
   };
 
+  const handleConditionChange = (event) => {
+    setBook(prevState => ({
+      ...prevState,
+      state: event.target.value
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
     if (id) {
-      axios.patch(`http://localhost:3333/books/${id}`, book)
+      api.patch(`/books/${id}`, book)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -53,7 +60,7 @@ const BookForm = () => {
           });
         });
     } else {
-      axios.post('http://localhost:3333/books', book)
+      api.post('/books', book)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -106,15 +113,18 @@ const BookForm = () => {
         />
       </Grid>
       <Grid item md={6} sm={12} xs={12}>
-        <TextField
-          name="state"
-          label="Estado"
-          variant="outlined"
-          size="small"
-          margin="normal"
-          value={book.state}
-          onChange={handleChange}
-        />
+        <FormControl variant="outlined" size="small" margin="normal" style={{ width: '225px' }}>
+          <InputLabel>Condição</InputLabel>
+          <Select
+            name="condition"
+            value={book.state}
+            onChange={handleConditionChange}
+            label="Condição"
+          >
+            <MenuItem value="Novo">Novo</MenuItem>
+            <MenuItem value="Usado">Usado</MenuItem>
+          </Select>
+        </FormControl>
       </Grid>
       {id && (
         <Grid item md={12} sm={6} xs={6}>

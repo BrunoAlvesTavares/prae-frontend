@@ -14,6 +14,8 @@ import {
     AccountCircle as AccountCircleIcon,
 } from '@mui/icons-material';
 
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+
 import { Link } from 'react-router-dom';
 
 const Menu = () => {
@@ -23,6 +25,7 @@ const Menu = () => {
         { label: 'Página inicial', icon: <HomeIcon />, path: '/' },
         { label: 'Livros', icon: <BookIcon />, path: '/books' },
         { label: 'Usuários', icon: <AccountCircleIcon />, path: '/users' },
+        { label: 'Sair', icon: <MeetingRoomIcon />, path: '/logout' },
     ];
 
     return (

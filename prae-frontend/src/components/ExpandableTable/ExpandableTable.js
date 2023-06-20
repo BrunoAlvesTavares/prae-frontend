@@ -31,7 +31,7 @@ function ExpandableTable({
   }, [menuOpen]);
 
   let options = {
-    expandableRows: true,
+    expandableRows: false,
     expandableRowsHeader: false,
     isRowExpandable: (dataIndex, expandedRows) => {
       if (dataIndex === 3 || dataIndex === 4) return false;

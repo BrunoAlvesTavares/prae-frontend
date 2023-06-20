@@ -137,9 +137,9 @@ function Login() {
                     color="secondary"
                     type="submit"
                     fullWidth
-                    style={{ backgroundColor: '#2196F3' }} // Adicione esta linha
+                    style={{ backgroundColor: '#2196F3' }}
                   >
-                    Filtrar
+                    Entrar
                   </Button>
                 </Grid>
               </Grid>

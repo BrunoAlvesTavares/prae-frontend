@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Grid } from '@mui/material';
-import axios from 'axios';
+import { TextField, Button, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Toast } from '../../components/swal';
+import api from '../../utils/api';
+import validator from 'validator';
 
 const UserForm = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ name: '', email: '', accessLevel: '', password: '' });
+  const [user, setUser] = useState({ name: '', username: '', accessLevel: '', password: '' });
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
   useEffect(() => {
     if (id) {
       setLoading(true);
-      axios.get(`http://localhost:3333/users/${id}`)
+      api.get(`/users/${id}`)
         .then(response => {
           setUser(response.data);
           setLoading(false);
@@ -31,19 +33,29 @@ const UserForm = () => {
       ...prevState,
       [name]: value
     }));
+    
+    if (name === 'username') {
+      setEmailError(!validator.isEmail(value));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    if (!validator.isEmail(user.username)) {
+      setEmailError(true);
+      return;
+    }
+    
     setLoading(true);
     if (id) {
-      axios.patch(`http://localhost:3333/users/${id}`, user)
+      api.patch(`/users/${id}`, user)
         .then(() => {
           Toast.fire({
             icon: "success",
             title: "Usuário salvo com sucesso!"
           }).then(() => {
-            navigate("/user");
+            navigate("/users");
           });
         }).catch(err => {
           Toast.fire({
@@ -52,7 +64,7 @@ const UserForm = () => {
           });
         });
     } else {
-      axios.post('http://localhost:3333/users', user)
+      api.post('/users', user)
         .then(() => {
           Toast.fire({
             icon: "success",
@@ -67,6 +79,13 @@ const UserForm = () => {
           });
         });
     }
+  };
+
+  const handleAccessChange = (event) => {
+    setUser(prevState => ({
+      ...prevState,
+      accessLevel: event.target.value
+    }));
   };
 
   return (
@@ -84,13 +103,15 @@ const UserForm = () => {
       </Grid>
       <Grid item md={6} sm={12} xs={12}>
         <TextField
-          name="email"
+          name="username"
           label="Email"
           variant="outlined"
           size="small"
           margin="normal"
-          value={user.email}
+          value={user.username}
           onChange={handleChange}
+          error={emailError}
+          helperText={emailError && 'Informe um email válido'}
         />
       </Grid>
       <Grid item md={6} sm={12} xs={12}>
@@ -105,15 +126,18 @@ const UserForm = () => {
         />
       </Grid>
       <Grid item md={6} sm={12} xs={12}>
-        <TextField
-          name="accessLevel"
-          label="Nível de acesso"
-          variant="outlined"
-          size="small"
-          margin="normal"
-          value={user.accessLevel}
-          onChange={handleChange}
-        />
+        <FormControl variant="outlined" size="small" margin="normal" style={{ width: '225px' }}>
+          <InputLabel>Nível de acesso</InputLabel>
+          <Select
+            name="accessLevel"
+            value={user.accessLevel}
+            onChange={handleAccessChange}
+            label="Nível de acesso"
+          >
+            <MenuItem value="admin">Administrador</MenuItem>
+            <MenuItem value="user">Usuário</MenuItem>
+          </Select>
+        </FormControl>
       </Grid>
       <Button variant="contained" color="primary" type="submit" disabled={loading} style={{ marginTop: '1rem' }}>
         {loading ? 'Loading...' : 'Salvar'}

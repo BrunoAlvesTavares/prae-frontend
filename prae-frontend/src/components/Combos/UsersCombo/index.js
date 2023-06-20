@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import api from '../../../utils/api';
 
-function UserCombo({ onUserChanged, value, disabled, multiple = false }) {
+function UserCombo({ onUserChanged, disabled, multiple = false }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:3333/users').then(response => {
+    api.get('/users').then(response => {
       setUsers(response.data);
+      console.log(response.data)
     }).finally(() => {
       setLoading(false);
     });
@@ -20,7 +21,7 @@ function UserCombo({ onUserChanged, value, disabled, multiple = false }) {
     <Autocomplete
       multiple={multiple}
       options={users}
-      getOptionLabel={(option) => option.email}
+      getOptionLabel={(option) => option.username}
       loading={loading}
       onChange={(event, newValue) => {
         onUserChanged(newValue);
