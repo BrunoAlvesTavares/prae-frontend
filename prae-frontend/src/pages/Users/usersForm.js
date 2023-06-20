@@ -46,7 +46,6 @@ const UserForm = () => {
       setEmailError(true);
       return;
     }
-    
     setLoading(true);
     if (id) {
       api.patch(`/users/${id}`, user)
@@ -86,6 +85,11 @@ const UserForm = () => {
       ...prevState,
       accessLevel: event.target.value
     }));
+  };
+
+  
+  const handleCancel = () => {
+    navigate("/users");
   };
 
   return (
@@ -141,6 +145,14 @@ const UserForm = () => {
       </Grid>
       <Button variant="contained" color="primary" type="submit" disabled={loading} style={{ marginTop: '1rem' }}>
         {loading ? 'Loading...' : 'Salvar'}
+      </Button>
+      <Button
+        variant="outlined"
+        onClick={handleCancel}
+        disabled={loading}
+        style={{ marginTop: '1rem', color: '#ec2300' }}
+      >
+        Cancelar
       </Button>
     </form>
   );
