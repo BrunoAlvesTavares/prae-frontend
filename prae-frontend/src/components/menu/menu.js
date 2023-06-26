@@ -22,7 +22,7 @@ const Menu = () => {
     const [selectedIndex, setSelectedIndex] = useState();
 
     const items = [
-        { label: 'Página inicial', icon: <HomeIcon />, path: '/' },
+        { label: 'Página inicial', icon: <HomeIcon />, path: '/home' },
         { label: 'Livros', icon: <BookIcon />, path: '/books' },
         { label: 'Usuários', icon: <AccountCircleIcon />, path: '/users' },
         { label: 'Sair', icon: <MeetingRoomIcon />, path: '/logout' },

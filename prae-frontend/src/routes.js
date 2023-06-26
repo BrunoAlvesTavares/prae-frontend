@@ -7,12 +7,14 @@ import Menu from './components/menu/menu';
 import UserForm from './pages/Users/usersForm';
 import LoginPage from './pages/Login/login';
 import Logout from './pages/Logout/logout';
+import HomePage from './pages/Home/home';
 
 const Layout = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<ListHomeMenu/>} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/users" element={<UsersList />} />
         <Route path="/users/new" element={<FormUserMenu />} />
@@ -30,6 +32,15 @@ const FormBookMenu = () => {
     <>
       <Menu />
       <BookForm />
+    </>
+  );
+};
+
+const ListHomeMenu = () => {
+  return (
+    <>
+      <Menu />
+      <HomePage />
     </>
   );
 };

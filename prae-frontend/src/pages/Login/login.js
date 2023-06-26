@@ -35,10 +35,6 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // if (isAuthenticated()) {
-  //     navigate('/books');
-  // }
-
   async function handleLogin(e) {
     e.preventDefault();
     if (!username || !password) {
