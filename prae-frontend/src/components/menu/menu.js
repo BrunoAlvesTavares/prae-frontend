@@ -13,20 +13,24 @@ import {
     Book as BookIcon,
     AccountCircle as AccountCircleIcon,
 } from '@mui/icons-material';
-
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 import { Link } from 'react-router-dom';
+const CACHE_CURRENT_USER = "@current-User";
 
 const Menu = () => {
     const [selectedIndex, setSelectedIndex] = useState();
-
+    const user = JSON.parse(localStorage.getItem(CACHE_CURRENT_USER));
     const items = [
         { label: 'Página inicial', icon: <HomeIcon />, path: '/home' },
         { label: 'Livros', icon: <BookIcon />, path: '/books' },
-        { label: 'Usuários', icon: <AccountCircleIcon />, path: '/users' },
+        { label: 'Reservas', icon: <BookmarksIcon />, path: '/reservedBooks' },
         { label: 'Sair', icon: <MeetingRoomIcon />, path: '/logout' },
     ];
+    if (user.accessLevel === 'admin') {
+        items.splice(2, 0, { label: 'Usuários', icon: <AccountCircleIcon />, path: '/users' });
+    }
 
     return (
         <>

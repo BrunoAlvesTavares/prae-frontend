@@ -8,6 +8,7 @@ import UserForm from './pages/Users/usersForm';
 import LoginPage from './pages/Login/login';
 import Logout from './pages/Logout/logout';
 import HomePage from './pages/Home/home';
+import { MyBookingList } from './pages/MyBookings/Mybookings';
 
 const Layout = () => {
   return (
@@ -20,6 +21,7 @@ const Layout = () => {
         <Route path="/users/new" element={<FormUserMenu />} />
         <Route path="/users/:id/edit" element={<FormUserMenu />} />
         <Route path="/books" element={<BooksList />} />
+        <Route path="/reservedBooks" element={<MyBookingList />} />
         <Route path="/books/new" element={<FormBookMenu />} />
         <Route path="/books/:id/edit" element={<FormBookMenu />} />
       </Routes>

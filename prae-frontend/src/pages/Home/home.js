@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Typography, Box, Button, Container, Paper } from '@mui/material';
+import React from 'react';
+import { Typography, Box, Container, Paper } from '@mui/material';
 import BookIcon from '@mui/icons-material/Book';
 
 const CACHE_CURRENT_USER = "@current-User";
@@ -13,7 +13,7 @@ const HomePage = () => {
         <Box sx={{ my: 4 }}>
           <BookIcon sx={{ fontSize: 70, color: 'primary.main', mx: 'auto' }} />
           <Typography variant="h5" component="h1" sx={{ mt: 2 }}>
-            Bem-vindo à PRAE
+            Bem-vindo á PRAE
           </Typography>
           <Typography variant="body1" sx={{ mt: 1, color: 'text.secondary', fontSize: '1.0rem' }}>
             {user.name}
@@ -24,7 +24,7 @@ const HomePage = () => {
         </Box>
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body1" sx={{ fontSize: '1.1rem' }}>
-            Esse e um sistema de troca de livros!
+            Esse é um sistema de troca de livros!
           </Typography>
         </Box>
       </Paper>

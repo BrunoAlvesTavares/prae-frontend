@@ -7,11 +7,14 @@ import PopperButton from '../../components/PopperButton/index';
 import FloatButton from '../../components/FloatButton/index';
 import api from '../../utils/api';
 
+const CACHE_CURRENT_USER = "@current-User";
+
 export function BooksList() {
   const navigate = useNavigate();
-  const [booksData, setBooksData] = useState([]);
+  const [filteredBooksData, setFilteredBooksData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [reload, setReload] = useState(true);
+  const user = JSON.parse(localStorage.getItem(CACHE_CURRENT_USER));
 
   const handleDelete = useCallback(async (ids) => {
     SwalWithMui.fire({
@@ -53,6 +56,33 @@ export function BooksList() {
     });
   }, []);
 
+  const handleReserveBook = async (id) => {
+    try {
+      const response = await api.patch(`/books/${id}`, { email: user.username });
+      if (response.status === 200) {
+        Toast.fire({
+          title: "Sucesso!",
+          text: "Livro reservado com sucesso",
+          icon: "success",
+        });
+        setReload(!reload);
+      } else {
+        Toast.fire({
+          title: "Erro ao reservar",
+          text: "Ocorreu um erro ao reservar o livro",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.fire({
+        title: "Erro ao reservar",
+        text: error.response.data.message,
+        icon: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     api
       .get('/books')
@@ -60,8 +90,11 @@ export function BooksList() {
         const updatedBooksData = response.data.map(book => {
           const username = book.trocadoPor ? book.trocadoPor.username : "---";
           return { ...book, category: book.category.join(", "), username };
-        })        
-        setBooksData(updatedBooksData);
+        });
+        
+        const filteredData = updatedBooksData.filter(book => !book.email);
+        setFilteredBooksData(filteredData);
+
         setColumns([
           {
             name: 'title',
@@ -115,13 +148,17 @@ export function BooksList() {
               filter: false,
               sort: false,
               customBodyRenderLite: dataIndex => {
-                const url = `/books/${response.data[dataIndex]._id}/edit`;
-                const items = [
-                  {
+                const url = `/books/${filteredData[dataIndex]._id}/edit`;
+                const items = [{
+                  label: 'Reservar Livro',
+                  onclick: () => handleReserveBook(filteredData[dataIndex]._id),
+                }];
+                if (user.accessLevel === 'admin') {
+                  items.push({
                     label: 'Trocar Livro',
                     onclick: () => navigate(url),
-                  },
-                ];
+                  });
+                }
                 return <OperationDropdown items={items} />;
               },
             },
@@ -132,10 +169,9 @@ export function BooksList() {
         console.log(error);
       });
   }, [reload]);
-  
 
   async function onRowsDelete(rowsDeleted) {
-    const ids = rowsDeleted.data.map(row => booksData[row.dataIndex]._id);
+    const ids = rowsDeleted.data.map(row => filteredBooksData[row.dataIndex]._id);
     await handleDelete(ids);
   }
 
@@ -143,13 +179,16 @@ export function BooksList() {
     <>
       <ExpandableTable
         onRowsDelete={onRowsDelete}
-        data={booksData}
+        data={filteredBooksData}
+        hideSelectable={user.accessLevel === 'admin' ? false : true}
         columns={columns}
         title="Lista de Livros"
       />
-      <PopperButton>
-        <FloatButton url="/books" />
-      </PopperButton>
+      {user.accessLevel === 'admin' && (
+        <PopperButton>
+          <FloatButton url="/books" />
+        </PopperButton>
+      )}
     </>
   );
 }

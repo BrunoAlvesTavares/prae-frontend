@@ -7,12 +7,12 @@ import api from '../../utils/api';
 
 const BookForm = () => {
   const navigate = useNavigate();
-  const [book, setBook] = useState({ title: '', author: '', category: '', state: 'Novo', trocadoPor: null });
+  const [book, setBook] = useState({ title: '', author: '', category: '', state: 'Novo', trocadoPor: null, email: null });
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const titleFieldLabel = id ? 'Título do livro que deseja trocar' : 'Título';
-  const AutorFieldLabel = id ? 'Autor do livro que deseja trocar' : 'Título';
+  const AutorFieldLabel = id ? 'Autor do livro que deseja trocar' : 'Autor';
 
   const handleChange = (event) => {
     const { name, value } = event.target;

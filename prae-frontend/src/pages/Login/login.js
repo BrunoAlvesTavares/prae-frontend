@@ -48,7 +48,7 @@ function Login() {
         try {
           const apiResponse = await api.post('/login', { username, password });
           login(apiResponse.data.access_token, apiResponse.data.currentUser);
-          navigate('/books');
+          navigate('/home');
         } catch (err) {
           setPassword("");
           setUsername("");
@@ -140,13 +140,6 @@ function Login() {
                 </Grid>
               </Grid>
             </form>
-          </Grid>
-          <Grid item md={12} sm={12} xs={12}>
-            <Typography variant="body2" align="center" color="primary">
-              <Link to="/forgot-password" style={{ textDecoration: "none", color: '#2196F3' }}>
-                Esqueci minha senha
-              </Link>
-            </Typography>
           </Grid>
         </Grid>
       </Paper>
