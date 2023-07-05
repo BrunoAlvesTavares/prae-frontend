@@ -89,7 +89,7 @@ export function BooksList() {
       .then(response => {
         const updatedBooksData = response.data.map(book => {
           const username = book.trocadoPor ? book.trocadoPor.username : "---";
-          return { ...book, category: book.category.join(", "), username };
+          return { ...book, username };
         });
         
         const filteredData = updatedBooksData.filter(book => !book.email);
@@ -108,24 +108,6 @@ export function BooksList() {
           {
             name: 'author',
             label: 'Autor',
-            options: {
-              filter: true,
-              sort: true,
-              filterType: 'textField',
-            },
-          },
-          {
-            name: 'category',
-            label: 'Categorias',
-            options: {
-              filter: true,
-              sort: true,
-              filterType: 'textField',
-            },
-          },
-          {
-            name: 'state',
-            label: 'Condição',
             options: {
               filter: true,
               sort: true,

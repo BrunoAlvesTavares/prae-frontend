@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 
 import { Link } from 'react-router-dom';
 const CACHE_CURRENT_USER = "@current-User";
@@ -26,6 +27,7 @@ const Menu = () => {
         { label: 'Página inicial', icon: <HomeIcon />, path: '/home' },
         { label: 'Livros', icon: <BookIcon />, path: '/books' },
         { label: 'Reservas', icon: <BookmarksIcon />, path: '/reservedBooks' },
+        { label: 'Quem somos', icon: <LiveHelpIcon />, path: '/infos' },
         { label: 'Sair', icon: <MeetingRoomIcon />, path: '/logout' },
     ];
     if (user.accessLevel === 'admin') {

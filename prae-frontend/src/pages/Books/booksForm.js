@@ -7,7 +7,7 @@ import api from '../../utils/api';
 
 const BookForm = () => {
   const navigate = useNavigate();
-  const [book, setBook] = useState({ title: '', author: '', category: '', state: 'Novo', trocadoPor: null, email: null });
+  const [book, setBook] = useState({ title: '', author: '', trocadoPor: null, email: null });
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,10 +38,6 @@ const BookForm = () => {
 
     if (!book.author) {
       errors.author = 'O autor é obrigatório.';
-    }
-
-    if (!book.category) {
-      errors.category = 'A categoria é obrigatória.';
     }
 
     setErrors(errors);
@@ -123,33 +119,6 @@ const BookForm = () => {
           error={!!errors.author}
           helperText={errors.author}
         />
-      </Grid>
-      <Grid item md={6} sm={12} xs={12}>
-        <TextField
-          name="category"
-          label="Categoria"
-          variant="outlined"
-          size="small"
-          margin="normal"
-          value={book.category}
-          onChange={handleChange}
-          error={!!errors.category}
-          helperText={errors.category}
-        />
-      </Grid>
-      <Grid item md={6} sm={12} xs={12}>
-        <FormControl variant="outlined" size="small" margin="normal" style={{ width: '225px' }}>
-          <InputLabel>Condição</InputLabel>
-          <Select
-            name="condition"
-            value={book.state}
-            onChange={handleConditionChange}
-            label="Condição"
-          >
-            <MenuItem value="Novo">Novo</MenuItem>
-            <MenuItem value="Usado">Usado</MenuItem>
-          </Select>
-        </FormControl>
       </Grid>
       {id && (
         <Grid item md={12} sm={6} xs={6}>

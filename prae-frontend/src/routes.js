@@ -8,6 +8,7 @@ import UserForm from './pages/Users/usersForm';
 import LoginPage from './pages/Login/login';
 import Logout from './pages/Logout/logout';
 import HomePage from './pages/Home/home';
+import Info from './pages/Info/info';
 import { MyBookingList } from './pages/MyBookings/Mybookings';
 
 const Layout = () => {
@@ -15,13 +16,14 @@ const Layout = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={<ListHomeMenu/>} />
+        <Route path="/home" element={<ListHomeMenu />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/users" element={<UsersList />} />
         <Route path="/users/new" element={<FormUserMenu />} />
         <Route path="/users/:id/edit" element={<FormUserMenu />} />
         <Route path="/books" element={<BooksList />} />
         <Route path="/reservedBooks" element={<MyBookingList />} />
+        <Route path="/infos" element={<InfoMenu />} />
         <Route path="/books/new" element={<FormBookMenu />} />
         <Route path="/books/:id/edit" element={<FormBookMenu />} />
       </Routes>
@@ -46,6 +48,15 @@ const ListHomeMenu = () => {
     </>
   );
 };
+
+const InfoMenu = () => {
+  return (
+    <>
+      <Menu />
+      <Info />
+    </>
+  )
+}
 
 const FormUserMenu = () => {
   return (
